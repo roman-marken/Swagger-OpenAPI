@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ShopReviewsApi</name>
+    </assembly>
+    <members>
+        <member name="T:ShopReviewsApi.Controllers.ReviewsController">
+            <summary>
+            Публічне API відгуків до предметів каталогу (версія 1).
+            </summary>
+        </member>
+        <member name="M:ShopReviewsApi.Controllers.ReviewsController.GetByItem(System.Int32)">
+            <summary>
+            Повертає всі відгуки конкретного предмета каталогу.
+            </summary>
+            <param name="itemId">Цілочисельний ідентифікатор предмета каталогу.</param>
+            <returns>Список відгуків. Порожній масив, якщо відгуків ще немає.</returns>
+        </member>
+        <member name="M:ShopReviewsApi.Controllers.ReviewsController.Create(System.Int32,ShopReviewsApi.Models.CreateReviewRequest)">
+            <summary>
+            Додає новий відгук до предмета каталогу.
+            </summary>
+            <param name="itemId">Цілочисельний ідентифікатор предмета каталогу.</param>
+            <param name="request">Автор (обов'язково), оцінка 1–5 (обов'язково), коментар (необов'язково).</param>
+        </member>
+        <member name="M:ShopReviewsApi.Controllers.ReviewsController.Update(System.Int32,ShopReviewsApi.Models.UpdateReviewRequest)">
+            <summary>
+            Частково оновлює існуючий відгук: лише оцінку і/або коментар. Ім'я автора не змінюється.
+            </summary>
+            <param name="id">Номер відгуку.</param>
+            <param name="request">Поля для зміни. Пропущене поле залишається без змін.</param>
+        </member>
+        <member name="M:ShopReviewsApi.Controllers.ReviewsController.GetFeatured(System.Int32,System.Int32)">
+            <summary>
+            Добірка «хороших» відгуків для віджета на сайті: лише з оцінкою не нижче порога.
+            </summary>
+            <param name="itemId">Цілочисельний ідентифікатор предмета каталогу.</param>
+            <param name="minRating">
+            Мінімальна оцінка (1–5). Відгуки з нижчою оцінкою не потрапляють у відповідь.
+            Якщо параметр не передати, використовується 4 (сьогоднішній запит маркетингу: «від 4 і вище»).
+            </param>
+        </member>
+        <member name="T:ShopReviewsApi.Controllers.ReviewsV2Controller">
+            <summary>
+            Статистика відгуків (версія 2). Форма відповіді інша, ніж список у v1, тому винесено окремо.
+            </summary>
+        </member>
+        <member name="M:ShopReviewsApi.Controllers.ReviewsV2Controller.GetStats(System.Int32)">
+            <summary>
+            Повертає середню оцінку та кількість відгуків по предмету каталогу.
+            </summary>
+            <param name="itemId">Цілочисельний ідентифікатор предмета каталогу.</param>
+        </member>
+        <member name="T:ShopReviewsApi.Controllers.SupportReviewsController">
+            <summary>
+            Внутрішній інструмент служби підтримки. Не входить до публічної документації.
+            </summary>
+        </member>
+        <member name="M:ShopReviewsApi.Controllers.SupportReviewsController.Delete(System.Int32)">
+            <summary>
+            Видаляє відгук за номером (спам / образливий контент). Лише для операторів підтримки.
+            </summary>
+        </member>
+        <member name="T:ShopReviewsApi.Models.CreateReviewRequest">
+            <summary>
+            Тіло запиту на створення відгуку.
+            </summary>
+        </member>
+        <member name="P:ShopReviewsApi.Models.CreateReviewRequest.Author">
+            <summary>Ім'я автора. Обов'язкове, короткий текст.</summary>
+        </member>
+        <member name="P:ShopReviewsApi.Models.CreateReviewRequest.Rating">
+            <summary>Оцінка. Ціле число від 1 до 5.</summary>
+        </member>
+        <member name="P:ShopReviewsApi.Models.CreateReviewRequest.Comment">
+            <summary>Необов'язковий коментар (кілька речень, до 500 символів).</summary>
+        </member>
+        <member name="T:ShopReviewsApi.Models.Review">
+            <summary>
+            Відгук про предмет каталогу (товар, книжка, курс тощо).
+            </summary>
+        </member>
+        <member name="P:ShopReviewsApi.Models.Review.Id">
+            <summary>Унікальний номер відгуку.</summary>
+        </member>
+        <member name="P:ShopReviewsApi.Models.Review.ItemId">
+            <summary>Цілочисельний ідентифікатор предмета каталогу.</summary>
+        </member>
+        <member name="P:ShopReviewsApi.Models.Review.Author">
+            <summary>Ім'я автора. Після створення не змінюється.</summary>
+        </member>
+        <member name="P:ShopReviewsApi.Models.Review.Rating">
+            <summary>Оцінка від 1 (погано) до 5 (відмінно).</summary>
+        </member>
+        <member name="P:ShopReviewsApi.Models.Review.Comment">
+            <summary>Необов'язковий текстовий коментар.</summary>
+        </member>
+        <member name="T:ShopReviewsApi.Models.ReviewStats">
+            <summary>
+            Агрегована статистика відгуків по предмету каталогу.
+            </summary>
+        </member>
+        <member name="P:ShopReviewsApi.Models.ReviewStats.ItemId">
+            <summary>Ідентифікатор предмета каталогу.</summary>
+        </member>
+        <member name="P:ShopReviewsApi.Models.ReviewStats.Count">
+            <summary>Кількість відгуків. 0, якщо відгуків ще немає.</summary>
+        </member>
+        <member name="P:ShopReviewsApi.Models.ReviewStats.AverageRating">
+            <summary>Середня оцінка. 0, якщо відгуків немає.</summary>
+        </member>
+        <member name="T:ShopReviewsApi.Models.UpdateReviewRequest">
+            <summary>
+            Часткове оновлення відгуку: можна змінити оцінку і/або коментар. Автор не змінюється.
+            Поле, яке не передано в JSON, залишається як було.
+            </summary>
+        </member>
+        <member name="P:ShopReviewsApi.Models.UpdateReviewRequest.Rating">
+            <summary>Нова оцінка (1–5). Якщо не передано — оцінка не змінюється.</summary>
+        </member>
+        <member name="P:ShopReviewsApi.Models.UpdateReviewRequest.Comment">
+            <summary>Новий коментар (до 500 символів). Якщо не передано — коментар не змінюється.</summary>
+        </member>
+        <member name="T:ShopReviewsApi.Repositories.InMemoryReviewRepository">
+            <summary>
+            Сховище відгуків у пам'яті процесу (як ProductRepository у Модулі 2).
+            </summary>
+        </member>
+        <member name="T:Program">
+            <summary>
+            Auto-generated public partial Program class for top-level statement apps.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type)">
+            <summary>
+            Generates a documentation comment ID for a type.
+            Example: T:Namespace.Outer+Inner`1 becomes T:Namespace.Outer.Inner`1
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.PropertyInfo)">
+            <summary>
+            Generates a documentation comment ID for a property.
+            Example: P:Namespace.ContainingType.PropertyName or for an indexer P:Namespace.ContainingType.Item(System.Int32)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type,System.String)">
+            <summary>
+            Generates a documentation comment ID for a property given its container type and property name.
+            Example: P:Namespace.ContainingType.PropertyName
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.MethodInfo)">
+            <summary>
+            Generates a documentation comment ID for a method (or constructor).
+            For example:
+              M:Namespace.ContainingType.MethodName(ParamType1,ParamType2)~ReturnType
+              M:Namespace.ContainingType.#ctor(ParamType)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.GetTypeDocId(System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            Generates a documentation ID string for a type.
+            This method handles nested types (replacing '+' with '.'),
+            generic types, arrays, pointers, by-ref types, and generic parameters.
+            The <paramref name="includeGenericArguments"/> flag controls whether
+            constructed generic type arguments are emitted, while <paramref name="omitGenericArity"/>
+            controls whether the generic arity marker (e.g. "`1") is appended.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.NormalizeDocId(System.String)">
+            <summary>
+            Normalizes a documentation comment ID to match the compiler-style format.
+            Strips the return type suffix for ordinary methods but retains it for conversion operators.
+            </summary>
+            <param name="docId">The documentation comment ID to normalize.</param>
+            <returns>The normalized documentation comment ID.</returns>
+        </member>
+    </members>
+</doc>
